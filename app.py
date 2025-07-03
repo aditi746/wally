@@ -30,7 +30,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 # ----------------------------------------------------------------
 # CONFIG – edit these if the file name ever changes
 # ----------------------------------------------------------------
-FILE_NAME      = "Anirudh' data set.xlsx"
+FILE_NAME       = "Anirudh' data set.xlsx"
 PREFERRED_SHEET = "Dataset (2)"      # try this first, fall back if missing
 
 st.set_page_config(page_title="Walmart Sales Intelligence",
@@ -71,8 +71,8 @@ st.sidebar.title("🏷 Navigation")
 tab = st.sidebar.radio(
     "Choose module",
     ["📊 Descriptive Analytics",
-     "🤖 Classification",
-     "🎯 Clustering",
+     "🤖 Classifiers",
+     "🎯 Clusterer",
      "🛒 Association Rules",
      "📈 Regression"]
 )
@@ -157,10 +157,10 @@ if tab == "📊 Descriptive Analytics":
             st.pyplot(fig3)
 
 # ----------------------------------------------------------------
-# 🤖 CLASSIFICATION
+# 🤖 CLASSIFIERS
 # ----------------------------------------------------------------
-elif tab == "🤖 Classification":
-    st.header("🤖 Classification")
+elif tab == "🤖 Classifiers":
+    st.header("🤖 Classifiers")
 
     target_col = st.selectbox("Pick categorical target", categorical_cols)
     if target_col:
@@ -177,10 +177,10 @@ elif tab == "🤖 Classification":
         Xtr_sc, Xte_sc = scale(Xtr), scale(Xte)
 
         models = {
-            "KNN":             KNeighborsClassifier(n_neighbors=7),
-            "Decision Tree":   DecisionTreeClassifier(max_depth=6, random_state=42),
-            "Random Forest":   RandomForestClassifier(n_estimators=300, random_state=42),
-            "Gradient Boost":  GradientBoostingClassifier(random_state=42),
+            "KNN":            KNeighborsClassifier(n_neighbors=7),
+            "Decision Tree":  DecisionTreeClassifier(max_depth=6, random_state=42),
+            "Random Forest":  RandomForestClassifier(n_estimators=300, random_state=42),
+            "Gradient Boost": GradientBoostingClassifier(random_state=42),
         }
         scores, probas = [], {}
         for name, mdl in models.items():
@@ -212,13 +212,13 @@ elif tab == "🤖 Classification":
             st.pyplot(fig_roc)
 
 # ----------------------------------------------------------------
-# 🎯 CLUSTERING
+# 🎯 CLUSTERER
 # ----------------------------------------------------------------
-elif tab == "🎯 Clustering":
-    st.header("🎯 K-Means Clustering")
+elif tab == "🎯 Clusterer":
+    st.header("🎯 K-Means Clusterer")
 
     if len(numeric_cols) < 2:
-        st.warning("Need at least two numeric columns for clustering.")
+        st.warning("Need at least two numeric columns for the clusterer.")
         st.stop()
 
     k = st.slider("k (clusters)", 2, 10, 4)
@@ -274,8 +274,8 @@ elif tab == "🛒 Association Rules":
                 st.warning("No rules meet confidence/lift thresholds")
             else:
                 st.dataframe(tidy_sets(rules).sort_values("lift", ascending=False)
-                             .head(10)[["antecedents","consequents","support","confidence","lift"]]
-                             .style.format({"support":"{:.3f}","confidence":"{:.2f}","lift":"{:.2f}"}))
+                              .head(10)[["antecedents","consequents","support","confidence","lift"]]
+                              .style.format({"support":"{:.3f}","confidence":"{:.2f}","lift":"{:.2f}"}))
 
 # ----------------------------------------------------------------
 # 📈 REGRESSION
